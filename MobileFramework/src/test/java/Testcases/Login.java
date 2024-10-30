@@ -24,8 +24,7 @@ public class Login extends BaseTest{
 		login.enterPhoneNumber(PhoneNumber);
 		login.btn_PhoneNumber_enter_next();
 		login.enterOTP(OTP);
+		login.click_On_Screen();
 		login.btn_OTP_Next();
-		login.opt_Male();
-		login.btn_Male_Next();
     }
 }
