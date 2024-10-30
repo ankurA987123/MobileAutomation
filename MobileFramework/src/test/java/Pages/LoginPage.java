@@ -18,6 +18,7 @@ import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 
 public class LoginPage extends BaseTest{
+	Robot robot;
 
 	WebElement btn_Allow_Location;
 	WebElement btn_Allow_Notifications;
@@ -29,6 +30,7 @@ public class LoginPage extends BaseTest{
 	WebElement btn_OTP_Next;
 	WebElement opt_Male;
 	WebElement btn_Male_Next;
+	WebElement click_On_Screen;
 	
 	
 	//public AppiumDriver driver;
@@ -58,9 +60,8 @@ public class LoginPage extends BaseTest{
 		 
 		wait.until(ExpectedConditions.elementToBeClickable(By.xpath(loc.getProperty("txt_Enter_Phone_Number"))))
 				.click();
-		wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(loc.getProperty("txt_Enter_Phone_Number"))))
-				.sendKeys(PhoneNumber+"1");
-		Robot robot = new Robot();
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(loc.getProperty("txt_Enter_Phone_Number")))).sendKeys(PhoneNumber+"1");
+	    robot = new Robot();
 		robot.keyPress(KeyEvent.VK_BACK_SPACE);
 	}
 	
@@ -68,9 +69,18 @@ public class LoginPage extends BaseTest{
 	    wait.until(ExpectedConditions.elementToBeClickable(By.xpath(loc.getProperty("btn_PhoneNumber_enter_next")))).click();
 	}
 	
-	public void enterOTP(String OTP) {
+	public void enterOTP(String OTP) throws AWTException, InterruptedException {
 
-		wait.until(ExpectedConditions.elementToBeClickable(By.xpath(loc.getProperty("txt_Enter_OTP")))).sendKeys(OTP);
+		for (int i = 0; i < OTP.length(); i++) {
+			String txt_Enter_OTP = "//android.widget.EditText[starts-with(@resource-id, 'otp_" + i + "')]";
+			
+			WebElement otpField = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(txt_Enter_OTP)));
+			
+			otpField.clear();
+			otpField.sendKeys(String.valueOf(OTP.charAt(i)));
+			
+			robot.keyPress(KeyEvent.VK_TAB);
+		}
 	}
 	
 	public void btn_OTP_Next() {
@@ -85,5 +95,8 @@ public class LoginPage extends BaseTest{
 	    wait.until(ExpectedConditions.elementToBeClickable(By.xpath(loc.getProperty("btn_Male_Next")))).click();
 	}
 	
+	public void click_On_Screen() {
+	    wait.until(ExpectedConditions.elementToBeClickable(By.xpath(loc.getProperty("click_On_Screen")))).click();
+	}
 	
 }
